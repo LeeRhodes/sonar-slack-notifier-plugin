@@ -83,8 +83,7 @@ public class ProjectAnalysisPayloadBuilder {
 
         QualityGate qualityGate = analysis.getQualityGate();
         String shortText = String.join("",
-                "Project [", analysis.getProject().getName(), "] analyzed. See ",
-                projectUrl,
+                "<", projectUrl, "|", analysis.getProject().getName(), "> analysis complete",
                 qualityGate == null ? "." : ". Quality gate status: " + qualityGate.getStatus());
 
         return Payload.builder()

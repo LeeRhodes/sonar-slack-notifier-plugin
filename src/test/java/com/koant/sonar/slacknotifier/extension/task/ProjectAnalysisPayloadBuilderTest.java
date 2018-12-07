@@ -103,8 +103,8 @@ public class ProjectAnalysisPayloadBuilderTest {
                 .color("good")
                 .build());
         return Payload.builder()
-                .text("Project [Project Name] analyzed. See "
-                    + "http://localhist:9000/dashboard?id=project:key. Quality gate status: OK")
+                .text("<http://localhist:9000/dashboard?id=project:key|Project Name> analysis complete"
+                    + ". Quality gate status: OK")
                 .channel("#channel")
                 .username("CKSSlackNotifier")
                 .attachments(attachments)
