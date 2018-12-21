@@ -83,8 +83,7 @@ public class ProjectAnalysisPayloadBuilder {
 
         QualityGate qualityGate = analysis.getQualityGate();
         String shortText = String.join("",
-                "Project [", analysis.getProject().getName(), "] analyzed. See ",
-                projectUrl,
+                "<", projectUrl, "|", analysis.getProject().getName(), "> analysis complete",
                 qualityGate == null ? "." : ". Quality gate status: " + qualityGate.getStatus());
 
         return Payload.builder()
@@ -137,22 +136,29 @@ public class ProjectAnalysisPayloadBuilder {
                     .value(condition.getStatus().name())
                     .valueShortEnough(true)
                     .build();
+        } else if (condition.getStatus().name().equals("OK")) { 
+            return Field.builder().title(conditionName + ": " + condition.getStatus().name())
+                    .valueShortEnough(false)
+                    .build();
         } else {
             StringBuilder sb = new StringBuilder();
-            appendValue(condition, sb);
-            appendValuePostfix(condition, sb);
             if (condition.getWarningThreshold() != null) {
-                sb.append(", warning if ");
+                sb.append("```Warn if value is ");
                 appendValueOperatorPrefix(condition, sb);
                 sb.append(condition.getWarningThreshold());
                 appendValuePostfix(condition, sb);
+
             }
             if (condition.getErrorThreshold() != null) {
-                sb.append(", error if ");
+                sb.append("```Error if value is ");
                 appendValueOperatorPrefix(condition, sb);
                 sb.append(condition.getErrorThreshold());
                 appendValuePostfix(condition, sb);
             }
+            sb.append(". Value: ");
+            appendValue(condition, sb);
+            appendValuePostfix(condition, sb);
+            sb.append("```");
             return Field.builder().title(conditionName + ": " + condition.getStatus().name())
                     .value(sb.toString())
                     .valueShortEnough(false)
@@ -186,16 +192,16 @@ public class ProjectAnalysisPayloadBuilder {
     private void appendValueOperatorPrefix(QualityGate.Condition condition, StringBuilder sb) {
         switch (condition.getOperator()) {
             case EQUALS:
-                sb.append("==");
+                sb.append("equal to ");
                 break;
             case NOT_EQUALS:
-                sb.append("!=");
+                sb.append("not equal to ");
                 break;
             case GREATER_THAN:
-                sb.append(">");
+                sb.append("greater than ");
                 break;
             case LESS_THAN:
-                sb.append("<");
+                sb.append("less than ");
                 break;
         }
     }
