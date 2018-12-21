@@ -79,22 +79,22 @@ public class ProjectAnalysisPayloadBuilderTest {
         List<Field> fields = new ArrayList<>();
         fields.add(Field.builder()
                 .title("New Vulnerabilities: OK")
-                .value("0, error if >0")
+                .value(null)
                 .valueShortEnough(false)
                 .build());
         fields.add(Field.builder()
                 .title("New Bugs: ERROR")
-                .value("1, error if >0")
+                .value("```Error if value is greater than 0. Value: 1```")
                 .valueShortEnough(false)
                 .build());
         fields.add(Field.builder()
                 .title("Technical Debt Ratio on New Code: OK")
-                .value("0.01%, warning if >2.0%, error if >10.0%")
+                .value(null)
                 .valueShortEnough(false)
                 .build());
         fields.add(Field.builder()
                 .title("Coverage on New Code: ERROR")
-                .value("75.51%, error if <80.0%")
+                .value("```Error if value is less than 80.0%. Value: 75.51%```")
                 .valueShortEnough(false)
                 .build());
 
@@ -118,7 +118,7 @@ public class ProjectAnalysisPayloadBuilderTest {
         Payload payload = ProjectAnalysisPayloadBuilder.of(postProjectAnalysisTask.getProjectAnalysis())
                 .projectConfig(projectConfig)
                 .i18n(i18n)
-                .projectUrl("http://localhist:9000/dashboard?id=project:key")
+                .projectUrl("http://localhost:9000/dashboard?id=project:key")
                 .username("CKSSlackNotifier")
                 .build();
 
