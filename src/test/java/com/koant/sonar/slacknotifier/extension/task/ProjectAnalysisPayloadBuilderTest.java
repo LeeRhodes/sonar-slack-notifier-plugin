@@ -64,7 +64,7 @@ public class ProjectAnalysisPayloadBuilderTest {
     @Test
     public void testPayloadBuilder() {
         Analyses.qualityGateOk4Conditions(postProjectAnalysisTask);
-        ProjectConfig projectConfig = new ProjectConfig("hook", "key", false);
+        ProjectConfig projectConfig = new ProjectConfig("key", "#channel", false);
         Payload payload = ProjectAnalysisPayloadBuilder.of(postProjectAnalysisTask.getProjectAnalysis())
                 .projectConfig(projectConfig)
                 .i18n(i18n)
@@ -105,6 +105,7 @@ public class ProjectAnalysisPayloadBuilderTest {
         return Payload.builder()
                 .text("<http://localhist:9000/dashboard?id=project:key|Project Name> analysis complete"
                     + ". Quality gate status: OK")
+                .channel("#channel")
                 .username("CKSSlackNotifier")
                 .attachments(attachments)
                 .build();
@@ -113,7 +114,7 @@ public class ProjectAnalysisPayloadBuilderTest {
     @Test
     public void shouldShowOnlyExceededConditionsIfProjectConfigReportOnlyOnFailedQualityGateWay() throws Exception {
         Analyses.qualityGateError2Of3ConditionsFailed(postProjectAnalysisTask);
-        ProjectConfig projectConfig = new ProjectConfig("hook", "key", QG_FAIL_ONLY);
+        ProjectConfig projectConfig = new ProjectConfig("key", "#channel", QG_FAIL_ONLY);
         Payload payload = ProjectAnalysisPayloadBuilder.of(postProjectAnalysisTask.getProjectAnalysis())
                 .projectConfig(projectConfig)
                 .i18n(i18n)
@@ -132,7 +133,7 @@ public class ProjectAnalysisPayloadBuilderTest {
     @Test
     public void buildPayloadWithoutQualityGateWay() throws Exception {
         Analyses.noQualityGate(postProjectAnalysisTask);
-        ProjectConfig projectConfig = new ProjectConfig("hook", "key", false);
+        ProjectConfig projectConfig = new ProjectConfig("key", "#channel", false);
         Payload payload = ProjectAnalysisPayloadBuilder.of(postProjectAnalysisTask.getProjectAnalysis())
                 .projectConfig(projectConfig)
                 .i18n(i18n)

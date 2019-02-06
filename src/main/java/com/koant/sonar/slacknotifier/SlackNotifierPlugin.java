@@ -30,6 +30,14 @@ public class SlackNotifierPlugin implements Plugin {
     }
 
     private void addPluginPropertyDefinitions(List<Object> extensions) {
+        extensions.add(PropertyDefinition.builder(HOOK.property())
+            .name("Slack web integration hook")
+            .description("https://api.slack.com/incoming-webhooks")
+            .type(PropertyType.STRING)
+            .category(CATEGORY)
+            .subCategory(SUBCATEGORY)
+            .index(0)
+            .build());
         extensions.add(PropertyDefinition.builder(USER.property())
             .name("Slack user alias")
             .description("Messages from this plugin appear woth given username")
@@ -37,7 +45,7 @@ public class SlackNotifierPlugin implements Plugin {
             .type(PropertyType.STRING)
             .category(CATEGORY)
             .subCategory(SUBCATEGORY)
-            .index(0)
+            .index(1)
             .build());
         extensions.add(PropertyDefinition.builder(ENABLED.property())
             .name("Plugin enabled")
@@ -46,7 +54,7 @@ public class SlackNotifierPlugin implements Plugin {
             .type(PropertyType.BOOLEAN)
             .category(CATEGORY)
             .subCategory(SUBCATEGORY)
-            .index(1)
+            .index(2)
             .build());
 
 
@@ -57,21 +65,21 @@ public class SlackNotifierPlugin implements Plugin {
                         "If a slack channel is not configured for a project, no slack message will be sent for project.")
                 .category(CATEGORY)
                 .subCategory(SUBCATEGORY)
-                .index(2)
+                .index(3)
                 .fields(
-                    PropertyFieldDefinition.build(HOOK.property())
-                        .name("Slack web integration hook")
-                        .description("https://api.slack.com/incoming-webhooks")
-                        .type(PropertyType.STRING)
-                        .build(),
                     PropertyFieldDefinition.build(PROJECT.property())
                         .name("Project Key")
                         .description("Ex: com.koant.sonar.slack:sonar-slack-notifier-plugin, can use '*' wildcard at the end")
                         .type(PropertyType.STRING)
                         .build(),
-                    PropertyFieldDefinition.build(QG_FAIL_ONLY.property())
+                    PropertyFieldDefinition.build(CHANNEL.property())
+                        .name("Slack channel")
+                        .description("Channel to send project specific messages to")
+                        .type(PropertyType.STRING)
+                        .build(),
+                        PropertyFieldDefinition.build(QG_FAIL_ONLY.property())
                         .name("Send on failed Quality Gate")
-                        .description("")
+                        .description("Should notification be sent only if Quality Gate did not pass OK")
                         .type(PropertyType.BOOLEAN)
                         .build()
                 )

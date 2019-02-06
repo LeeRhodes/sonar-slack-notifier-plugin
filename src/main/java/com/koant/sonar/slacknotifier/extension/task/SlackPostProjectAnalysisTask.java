@@ -66,7 +66,7 @@ public class SlackPostProjectAnalysisTask extends AbstractSlackNotifyingComponen
 
         try {
             // See https://github.com/seratch/jslack
-            WebhookResponse response = slackClient.send(projectConfig.getHook(), payload);
+            WebhookResponse response = slackClient.send(getSlackIncomingWebhookUrl(), payload);
             if (!Integer.valueOf(200).equals(response.getCode())) {
                 LOG.error("Failed to post to slack, response is [{}]", response);
             }
