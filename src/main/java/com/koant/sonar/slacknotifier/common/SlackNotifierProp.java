@@ -5,6 +5,10 @@ import com.koant.sonar.slacknotifier.SlackNotifierPlugin;
 public enum SlackNotifierProp {
 
     /**
+     * The Slack Incoming Web Hook URL
+     */
+    HOOK("ckss.hook"),
+    /**
      * Appear in Slack channels as this user
      */
     USER("ckss.user"),
@@ -13,6 +17,7 @@ public enum SlackNotifierProp {
      * Per project slack notification sending depends on this and a project specific slack channel configuration existing.
      */
     ENABLED("ckss.enabled"),
+
     /**
      * <p>
      * The project specific slack channels have to be configured in General, server side settings, instead of per project
@@ -33,13 +38,13 @@ public enum SlackNotifierProp {
      */
     CONFIG("ckss.projectconfig"),
     /**
-     * The Slack Incoming Web Hook URL
-     */
-    HOOK("hook"),
-    /**
      * @see SlackNotifierProp#CONFIG
      */
     PROJECT("project"),
+    /**
+     * @see SlackNotifierProp#CONFIG
+     */
+    CHANNEL("channel"),
     /**
      * @see SlackNotifierProp#CONFIG
      */

@@ -87,6 +87,7 @@ public class ProjectAnalysisPayloadBuilder {
                 qualityGate == null ? "." : ". Quality gate status: " + qualityGate.getStatus());
 
         return Payload.builder()
+                .channel(projectConfig.getSlackChannel())
                 .username(slackUser)
                 .text(shortText)
                 .attachments(qualityGate == null ? null : buildConditionsAttachment(qualityGate, projectConfig.isQgFailOnly()))
