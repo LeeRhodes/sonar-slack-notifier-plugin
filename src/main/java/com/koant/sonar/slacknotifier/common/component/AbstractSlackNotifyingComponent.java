@@ -119,7 +119,6 @@ public abstract class AbstractSlackNotifyingComponent {
 
     protected String logRelevantSettings() {
         Map<String, String> pluginSettings = new HashMap<>();
-        mapSetting(pluginSettings, SlackNotifierProp.HOOK);
         mapSetting(pluginSettings, SlackNotifierProp.USER);
         mapSetting(pluginSettings, SlackNotifierProp.ENABLED);
         mapSetting(pluginSettings, SlackNotifierProp.CONFIG);
@@ -131,12 +130,6 @@ public abstract class AbstractSlackNotifyingComponent {
     }
 
     protected boolean shouldSkipSendingNotification(ProjectConfig projectConfig, QualityGate qualityGate) {
-        // Disabled due to missing channel value
-        if (projectConfig.getSlackChannel() == null ||
-                "".equals(projectConfig.getSlackChannel().trim())) {
-            LOG.info("Slack channel for project [{}] is blank, notifications disabled", projectConfig.getProjectKey());
-            return true;
-        }
         if (projectConfig.isQgFailOnly() && qualityGate != null && QualityGate.Status.OK.equals(qualityGate.getStatus())) {
             LOG.info("Project [{}] set up to send notification on failed Quality Gate, but was: {}", projectConfig.getProjectKey(), qualityGate.getStatus().name());
             return true;

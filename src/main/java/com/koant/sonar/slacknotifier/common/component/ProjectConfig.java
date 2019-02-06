@@ -10,13 +10,13 @@ import java.util.Objects;
  * Modified by poznachowski
  */
 public class ProjectConfig {
+    private final String hook;
     private final String projectKey;
-    private final String slackChannel;
     private final boolean qgFailOnly;
 
-    public ProjectConfig(String projectKey, String slackChannel, boolean qgFailOnly) {
+    public ProjectConfig(String hook, String projectKey, boolean qgFailOnly) {
+        this.hook = hook;
         this.projectKey = projectKey;
-        this.slackChannel = slackChannel;
         this.qgFailOnly = qgFailOnly;
     }
 
@@ -26,25 +26,25 @@ public class ProjectConfig {
      * @param c
      */
     public ProjectConfig(ProjectConfig c) {
+        this.hook = c.getHook();
         this.projectKey = c.getProjectKey();
-        this.slackChannel = c.getSlackChannel();
         this.qgFailOnly = c.isQgFailOnly();
     }
 
     static ProjectConfig create(Settings settings, String configurationId) {
         String configurationPrefix = SlackNotifierProp.CONFIG.property() + "." + configurationId + ".";
+        String hook = settings.getString(configurationPrefix + SlackNotifierProp.HOOK.property());
         String projectKey = settings.getString(configurationPrefix + SlackNotifierProp.PROJECT.property());
-        String slackChannel = settings.getString(configurationPrefix + SlackNotifierProp.CHANNEL.property());
         boolean qgFailOnly = settings.getBoolean(configurationPrefix + SlackNotifierProp.QG_FAIL_ONLY.property());
-        return new ProjectConfig(projectKey, slackChannel, qgFailOnly);
+        return new ProjectConfig(hook, projectKey, qgFailOnly);
+    }
+
+    public String getHook() {
+        return hook;
     }
 
     public String getProjectKey() {
         return projectKey;
-    }
-
-    public String getSlackChannel() {
-        return slackChannel;
     }
 
     public boolean isQgFailOnly() {
@@ -57,20 +57,20 @@ public class ProjectConfig {
         if (o == null || getClass() != o.getClass()) return false;
         ProjectConfig that = (ProjectConfig) o;
         return qgFailOnly == that.qgFailOnly &&
-                Objects.equals(projectKey, that.projectKey) &&
-                Objects.equals(slackChannel, that.slackChannel);
+                Objects.equals(hook, that.hook) &&
+                Objects.equals(projectKey, that.projectKey);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(projectKey, slackChannel, qgFailOnly);
+        return Objects.hash(hook, projectKey, qgFailOnly);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ProjectConfig{");
-        sb.append("projectKey='").append(projectKey).append('\'');
-        sb.append(", slackChannel='").append(slackChannel).append('\'');
+        sb.append("hook='").append(hook).append('\'');
+        sb.append(", projectKey='").append(projectKey).append('\'');
         sb.append(", qgFailOnly=").append(qgFailOnly);
         sb.append('}');
         return sb.toString();

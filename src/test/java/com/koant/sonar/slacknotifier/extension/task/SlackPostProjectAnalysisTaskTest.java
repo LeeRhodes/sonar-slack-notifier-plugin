@@ -29,7 +29,6 @@ import static org.mockito.Mockito.when;
  */
 public class SlackPostProjectAnalysisTaskTest {
 
-    private static final String HOOK = "hook";
     private static final String DIFFERENT_KEY = "different:key";
 
     CaptorPostProjectAnalysisTask postProjectAnalysisTask;
@@ -43,12 +42,11 @@ public class SlackPostProjectAnalysisTaskTest {
         postProjectAnalysisTask = new CaptorPostProjectAnalysisTask();
         settings = new MapSettings();
         settings.setProperty(ENABLED.property(), "true");
-        settings.setProperty(SlackNotifierProp.HOOK.property(), HOOK);
-        settings.setProperty(CHANNEL.property(), "channel");
+        settings.setProperty(HOOK.property(), "hook");
         settings.setProperty(USER.property(), "user");
         settings.setProperty(CONFIG.property(), PROJECT_KEY);
+        settings.setProperty(CONFIG.property() + "." + PROJECT_KEY + "." + HOOK.property(), "hook");
         settings.setProperty(CONFIG.property() + "." + PROJECT_KEY + "." + PROJECT.property(), PROJECT_KEY);
-        settings.setProperty(CONFIG.property() + "." + PROJECT_KEY + "." + CHANNEL.property(), "#random");
         settings.setProperty(CONFIG.property() + "." + PROJECT_KEY + "." + QG_FAIL_ONLY.property(), "false");
         settings.setProperty("sonar.core.serverBaseURL", "http://your.sonar.com/");
         slackClient = Mockito.mock(Slack.class);
@@ -68,7 +66,7 @@ public class SlackPostProjectAnalysisTaskTest {
     public void shouldCall() throws Exception {
         Analyses.simple(postProjectAnalysisTask);
         task.finished(postProjectAnalysisTask.getProjectAnalysis());
-        Mockito.verify(slackClient, times(1)).send(eq(HOOK), any(Payload.class));
+        Mockito.verify(slackClient, times(1)).send(eq("hook"), any(Payload.class));
     }
 
     @Test
